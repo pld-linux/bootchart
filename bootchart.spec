@@ -2,7 +2,7 @@ Summary:	Boot Process Performance Visualization
 Summary(pl):	Wizualizacja wydajno¶ci procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	1.2
+Release:	1.5
 Epoch:		0
 License:	GPL
 Group:		Base
@@ -108,16 +108,21 @@ fi
 # Add a new grub/lilo entry
 if [ -x /sbin/grubby ]; then
 	kernel=$(/sbin/grubby --default-kernel)
-	initrd=$(/sbin/grubby --info=$kernel | sed -n '/^initrd=/{s/^initrd=//;p;q;}')
-	[ ! -z $initrd ] && initrd="--initrd=$initrd"
+	info=$(/sbin/grubby --info=$kernel)
+	initrd=$(echo "$info" | sed -n '/^initrd=/{s/^initrd=//;p;q;}')
+	init=$(echo "$info" |sed -n '/^args=.*init=/{s/^args=.*init=//;s/"$//;p;q;}')
+	[ -n "$initrd" ] && initrd="--initrd=$initrd"
+	[ -n "$init" ] && init="bootchart_init=$init"
 	/sbin/grubby --remove-kernel TITLE=%{boottitle}
-	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd" --title=%{boottitle} || :
+	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd $init" --title=%{boottitle} || :
 fi
 
 %preun logger
-# Remove the grub/lilo entry
-if [ -x /sbin/grubby ]; then
-	/sbin/grubby --remove-kernel TITLE=%{boottitle} || :
+if [ "$1" = 0 ]; then
+	# Remove the grub/lilo entry
+	if [ -x /sbin/grubby ]; then
+		/sbin/grubby --remove-kernel TITLE=%{boottitle} || :
+	fi
 fi
 
 %files
