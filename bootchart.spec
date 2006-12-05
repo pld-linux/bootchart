@@ -5,9 +5,9 @@ Version:	0.9
 Release:	1
 Epoch:		0
 License:	GPL
-Group:		System
-Source0:	http://www.bootchart.org/dist/SOURCES/%{name}-%{version}.tar.bz2
-# Source0-md5:	-
+Group:		Base
+Source0:	http://dl.sourceforge.net/bootchart/%{name}-%{version}.tar.bz2
+# Source0-md5:	4be91177d19069e21beeb106f2f77dff
 URL:		http://www.bootchart.org/
 BuildRequires:	ant
 BuildRequires:	jakarta-commons-cli >= 0:1.0
@@ -45,7 +45,7 @@ Dokumentacja Javadoc dla bootcharta.
 %package logger
 Summary:	Boot logging script for %{name}
 Summary(pl):	Skrypt loguj±cy proces startu dla bootcharta
-Group:		System
+Group:		Base
 
 %description logger
 Boot logging script for %{name}.
@@ -95,17 +95,17 @@ fi
 %post logger
 # Add a new grub/lilo entry
 if [ -x /sbin/grubby ]; then
-	kernel=$(grubby --default-kernel)
-	initrd=$(grubby --info=$kernel | sed -n '/^initrd=/{s/^initrd=//;p;q;}')
+	kernel=$(/sbin/grubby --default-kernel)
+	initrd=$(/sbin/grubby --info=$kernel | sed -n '/^initrd=/{s/^initrd=//;p;q;}')
 	[ ! -z $initrd ] && initrd="--initrd=$initrd"
-	grubby --remove-kernel TITLE=%{boottitle}
-	grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd" --title=%{boottitle}
+	/sbin/grubby --remove-kernel TITLE=%{boottitle}
+	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd" --title=%{boottitle}
 fi
 
 %preun logger
 # Remove the grub/lilo entry
 if [ -x /sbin/grubby ]; then
-	grubby --remove-kernel TITLE=%{boottitle}
+	/sbin/grubby --remove-kernel TITLE=%{boottitle}
 fi
 
 %files
