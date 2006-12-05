@@ -1,12 +1,14 @@
 Summary:	Boot Process Performance Visualization
+Summary(pl):	Wizualizacja wydajno¶ci procesu startu systemu
 Name:		bootchart
 Version:	0.9
 Release:	1
 Epoch:		0
 License:	GPL
-URL:		http://www.bootchart.org/
-Source0:	http://www.bootchart.org/dist/SOURCES/%{name}-%{version}.tar.bz2
 Group:		System
+Source0:	http://www.bootchart.org/dist/SOURCES/%{name}-%{version}.tar.bz2
+# Source0-md5:	-
+URL:		http://www.bootchart.org/
 BuildRequires:	ant
 BuildRequires:	jakarta-commons-cli >= 0:1.0
 BuildRequires:	jpackage-utils >= 0:1.5
@@ -15,6 +17,7 @@ Requires:	jpackage-utils >= 0:1.5
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define boottitle "Bootchart logging"
 
 %description
 A tool for performance analysis and visualization of the GNU/Linux
@@ -22,21 +25,33 @@ boot process. Resource utilization and process information are
 collected during the boot process and are later rendered in a PNG, SVG
 or EPS encoded chart.
 
+%description -l pl
+Narzêdzie do analizy i wizualizacji wydajno¶ci procesu startu systemu
+GNU/Linux. Podczas startu systemu zbirane s± informacje o procesach i
+wykorzystaniu zasobów, a nastêpnie s± przedstawiane w postaci wykresu
+w formacie PNG, SVG lub EPS.
+
 %package javadoc
 Summary:	Javadoc for %{name}
+Summary(pl):	Dokumentacja Javadoc dla bootcharta
 Group:		Documentation
 
 %description javadoc
 Javadoc for %{name}.
 
+%description javadoc -l pl
+Dokumentacja Javadoc dla bootcharta.
+
 %package logger
 Summary:	Boot logging script for %{name}
+Summary(pl):	Skrypt loguj±cy proces startu dla bootcharta
 Group:		System
-
-%define boottitle "Bootchart logging"
 
 %description logger
 Boot logging script for %{name}.
+
+%description logger -l pl
+Skrypt loguj±cy proces startu dla bootcharta.
 
 %prep
 %setup -q
@@ -72,19 +87,19 @@ rm -rf $RPM_BUILD_ROOT
 rm -f %{_javadocdir}/%{name}
 ln -s %{name}-%{version} %{_javadocdir}/%{name}
 
+%postun javadoc
+if [ "$1" = "0" ]; then
+	rm -f %{_javadocdir}/%{name}
+fi
+
 %post logger
 # Add a new grub/lilo entry
 if [ -x /sbin/grubby ]; then
-        kernel=$(grubby --default-kernel)
-        initrd=$(grubby --info=$kernel | sed -n '/^initrd=/{s/^initrd=//;p;q;}')
-        [ ! -z $initrd ] && initrd="--initrd=$initrd"
-        grubby --remove-kernel TITLE=%{boottitle}
-        grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd" --title=%{boottitle}
-fi
-
-%postun javadoc
-if [ "$1" = "0" ]; then
-    rm -f %{_javadocdir}/%{name}
+	kernel=$(grubby --default-kernel)
+	initrd=$(grubby --info=$kernel | sed -n '/^initrd=/{s/^initrd=//;p;q;}')
+	[ ! -z $initrd ] && initrd="--initrd=$initrd"
+	grubby --remove-kernel TITLE=%{boottitle}
+	grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd" --title=%{boottitle}
 fi
 
 %preun logger
