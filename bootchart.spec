@@ -11,7 +11,9 @@ Source0:	http://dl.sourceforge.net/bootchart/%{name}-%{version}.tar.bz2
 URL:		http://www.bootchart.org/
 BuildRequires:	ant
 BuildRequires:	jakarta-commons-cli >= 0:1.0
+BuildRequires:	jaxp_parser_impl
 BuildRequires:	jpackage-utils >= 0:1.5
+BuildRequires:	rpmbuild(macros) >= 1.294
 Requires:	jakarta-commons-cli >= 0:1.0
 Requires:	jpackage-utils >= 0:1.5
 BuildArch:	noarch
@@ -59,7 +61,11 @@ Skrypt loguj±cy proces startu dla bootcharta.
 %build
 # Remove the bundled commons-cli
 rm -rf lib/org/apache/commons/cli lib/org/apache/commons/lang
-CLASSPATH=%{_javadir}/commons-cli.jar ant
+
+required_jars="commons-cli"
+export CLASSPATH="`/usr/bin/build-classpath $required_jars`"
+
+%ant
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -84,8 +90,7 @@ install -D script/bootchartd.conf $RPM_BUILD_ROOT%{_sysconfdir}/bootchartd.conf
 rm -rf $RPM_BUILD_ROOT
 
 %post javadoc
-rm -f %{_javadocdir}/%{name}
-ln -s %{name}-%{version} %{_javadocdir}/%{name}
+ln -sf %{name}-%{version} %{_javadocdir}/%{name}
 
 %postun javadoc
 if [ "$1" = "0" ]; then
