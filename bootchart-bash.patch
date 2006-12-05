@@ -1,0 +1,11 @@
+--- bootchart-0.9/script/bootchartd~	2005-11-13 19:40:01.000000000 +0200
++++ bootchart-0.9/script/bootchartd	2006-12-05 23:28:56.809443296 +0200
+@@ -101,7 +101,7 @@
+ 		# Write the time (in jiffies).
+ 		read uptime < /proc/uptime
+ 		uptime=${uptime%% [0-9]*}
+-		uptime=${uptime/./}
++		uptime=${uptime%.*}${uptime#*.}
+ 		echo $uptime
+ 
+ 		# Log the command output
