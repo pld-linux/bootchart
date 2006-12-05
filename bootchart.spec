@@ -2,12 +2,13 @@ Summary:	Boot Process Performance Visualization
 Summary(pl):	Wizualizacja wydajno¶ci procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	1
+Release:	1.2
 Epoch:		0
 License:	GPL
 Group:		Base
 Source0:	http://dl.sourceforge.net/bootchart/%{name}-%{version}.tar.bz2
 # Source0-md5:	4be91177d19069e21beeb106f2f77dff
+Patch0:		%{name}-bash.patch
 URL:		http://www.bootchart.org/
 BuildRequires:	ant
 BuildRequires:	jakarta-commons-cli >= 0:1.0
@@ -48,6 +49,11 @@ Dokumentacja Javadoc dla bootcharta.
 Summary:	Boot logging script for %{name}
 Summary(pl):	Skrypt loguj±cy proces startu dla bootcharta
 Group:		Base
+Requires:	coreutils
+Requires:	grep
+Requires:	mktemp
+Requires:	mount
+Requires:	sed
 
 %description logger
 Boot logging script for %{name}.
@@ -57,6 +63,7 @@ Skrypt loguj±cy proces startu dla bootcharta.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 # Remove the bundled commons-cli
@@ -104,13 +111,13 @@ if [ -x /sbin/grubby ]; then
 	initrd=$(/sbin/grubby --info=$kernel | sed -n '/^initrd=/{s/^initrd=//;p;q;}')
 	[ ! -z $initrd ] && initrd="--initrd=$initrd"
 	/sbin/grubby --remove-kernel TITLE=%{boottitle}
-	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd" --title=%{boottitle}
+	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd" --title=%{boottitle} || :
 fi
 
 %preun logger
 # Remove the grub/lilo entry
 if [ -x /sbin/grubby ]; then
-	/sbin/grubby --remove-kernel TITLE=%{boottitle}
+	/sbin/grubby --remove-kernel TITLE=%{boottitle} || :
 fi
 
 %files
