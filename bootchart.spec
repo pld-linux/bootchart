@@ -2,7 +2,7 @@ Summary:	Boot Process Performance Visualization
 Summary(pl):	Wizualizacja wydajno¶ci procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	1.8
+Release:	1.9
 Epoch:		0
 License:	GPL
 Group:		Base
@@ -120,6 +120,11 @@ if [ -x /sbin/grubby ]; then
 	[ -n "$init" ] && init="bootchart_init=$init"
 	/sbin/grubby --remove-kernel TITLE=%{boottitle}
 	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd $init" --title=%{boottitle} || :
+else
+	%banner -e %{name}-logger <<-EOF
+You should adjust your bootloader to boot with
+ init=/sbin/bootchartd
+EOF
 fi
 
 %preun logger
