@@ -21,7 +21,7 @@ Requires:	jpackage-utils >= 0:1.5
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define boottitle "Bootchart logging"
+%define		boottitle Bootchart logging
 
 %description
 A tool for performance analysis and visualization of the GNU/Linux
@@ -118,8 +118,8 @@ if [ -x /sbin/grubby ]; then
 	init=$(echo "$info" |sed -n '/^args=.*init=/{s/^args=.*init=//;s/"$//;p;q;}')
 	[ -n "$initrd" ] && initrd="--initrd=$initrd"
 	[ -n "$init" ] && init="bootchart_init=$init"
-	/sbin/grubby --remove-kernel TITLE=%{boottitle}
-	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd $init" --title=%{boottitle} || :
+	/sbin/grubby --remove-kernel TITLE='%{boottitle}'
+	/sbin/grubby --copy-default --add-kernel=$kernel $initrd --args="init=/sbin/bootchartd $init" --title='%{boottitle}' || :
 else
 	%banner -e %{name}-logger <<-EOF
 You should adjust your bootloader to boot with
@@ -131,7 +131,7 @@ fi
 if [ "$1" = 0 ]; then
 	# Remove the grub/lilo entry
 	if [ -x /sbin/grubby ]; then
-		/sbin/grubby --remove-kernel TITLE=%{boottitle} || :
+		/sbin/grubby --remove-kernel TITLE='%{boottitle}' || :
 	fi
 fi
 
