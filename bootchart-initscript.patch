@@ -1,0 +1,80 @@
+--- bootchart-0.9/script/bootchartd	2006-12-05 23:34:46.817310332 +0200
++++ bootchart-0.9/script/bootchartd	2006-12-08 13:35:59.820678167 +0200
+@@ -37,7 +37,7 @@
+ {
+ 	# Make sure only a single instance is running
+ 	[ -f "$BOOTLOG_LOCK" ] && return
+-	
++
+ 	# Mount the temporary file system for log file storage.  If possible,
+ 	# a temporary directory is created.  In most cases though (i.e. during
+ 	# boot), a tmpfs is mounted in /mnt.  The mount point is immediately
+@@ -58,7 +58,7 @@
+ 		> kernel_pacct
+ 		accton kernel_pacct
+ 	fi
+-	
++
+ 	# Wait for /proc to be mounted
+ 	while [ ! -f /proc/stat ]; do sleep $SAMPLE_PERIOD; done
+ 	sleep $SAMPLE_PERIOD
+@@ -216,17 +216,37 @@
+ 	# init(1).
+ 	IN_INIT="yes"
+ 	echo "Starting bootchart logging"
+-	start &
+-	
+-	# Optionally, an alternative init(1) process may be specified using
+-	# the kernel command line (e.g. "bootchart_init=/sbin/initng")
+-	init="/sbin/init"
+-	for i in $@; do
+-		if [ "${i%%=*}" = "bootchart_init" ]; then
+-			init="${i#*=}"
+-			break
++
++	# With 2.6.18 i had this in environment!
++	if [ -n "$bootchart_init" ]; then
++		init=$bootchart_init
++		start &
++
++	else
++		init="/sbin/init"
++
++		# get the cmdline from /proc/cmdline
++		if [ ! -f /proc/cmdline ]; then
++			mount -n -t proc none /proc
++			UMOUNT_PROC=yes
++		fi
++		cmdline=$(cat /proc/cmdline)
++		if [ "$UMOUNT_PROC" = yes ]; then
++			umount -n /proc
+ 		fi
+-	done
++
++		start &
++
++		# Optionally, an alternative init(1) process may be specified using
++		# the kernel command line (e.g. "bootchart_init=/sbin/initng")
++		for i in $cmdline; do
++			if [ "${i%%=*}" = "bootchart_init" ]; then
++				init="${i#*=}"
++				break
++			fi
++		done
++	fi
++
+ 	exec $init $*
+ fi
+ 
+@@ -247,7 +267,10 @@
+ 		killall -USR1 bootchartd
+ 		;;
+ 	*)
+-		echo $"Usage: $0 {init|start|stop}"
++		# Source function library
++		. /etc/rc.d/init.d/functions
++
++		msg_usage "$0 {init|start|stop}"
+ 		;;
+ esac
+ 
