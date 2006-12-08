@@ -2,13 +2,14 @@ Summary:	Boot Process Performance Visualization
 Summary(pl):	Wizualizacja wydajno¶ci procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	1.5
+Release:	1.8
 Epoch:		0
 License:	GPL
 Group:		Base
 Source0:	http://dl.sourceforge.net/bootchart/%{name}-%{version}.tar.bz2
 # Source0-md5:	4be91177d19069e21beeb106f2f77dff
 Patch0:		%{name}-bash.patch
+Patch1:		%{name}-initscript.patch
 URL:		http://www.bootchart.org/
 BuildRequires:	ant
 BuildRequires:	jakarta-commons-cli >= 0:1.0
@@ -38,6 +39,7 @@ w formacie PNG, SVG lub EPS.
 Summary:	Javadoc for %{name}
 Summary(pl):	Dokumentacja Javadoc dla bootcharta
 Group:		Documentation
+Requires:	jpackage-utils
 
 %description javadoc
 Javadoc for %{name}.
@@ -51,9 +53,11 @@ Summary(pl):	Skrypt loguj±cy proces startu dla bootcharta
 Group:		Base
 Requires:	coreutils
 Requires:	grep
+Requires:	gzip
 Requires:	mktemp
 Requires:	mount
 Requires:	sed
+Requires:	tar
 
 %description logger
 Boot logging script for %{name}.
@@ -64,6 +68,7 @@ Skrypt loguj±cy proces startu dla bootcharta.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 # Remove the bundled commons-cli
