@@ -1,5 +1,5 @@
 Summary:	Boot Process Performance Visualization
-Summary(pl):	Wizualizacja wydajno¶ci procesu startu systemu
+Summary(pl.UTF-8):   Wizualizacja wydajnoÅ›ci procesu startu systemu
 Name:		bootchart
 Version:	0.9
 Release:	1.9
@@ -29,27 +29,27 @@ boot process. Resource utilization and process information are
 collected during the boot process and are later rendered in a PNG, SVG
 or EPS encoded chart.
 
-%description -l pl
-Narzêdzie do analizy i wizualizacji wydajno¶ci procesu startu systemu
-GNU/Linux. Podczas startu systemu zbirane s± informacje o procesach i
-wykorzystaniu zasobów, a nastêpnie s± przedstawiane w postaci wykresu
+%description -l pl.UTF-8
+NarzÄ™dzie do analizy i wizualizacji wydajnoÅ›ci procesu startu systemu
+GNU/Linux. Podczas startu systemu zbirane sÄ… informacje o procesach i
+wykorzystaniu zasobÃ³w, a nastÄ™pnie sÄ… przedstawiane w postaci wykresu
 w formacie PNG, SVG lub EPS.
 
 %package javadoc
 Summary:	Javadoc for %{name}
-Summary(pl):	Dokumentacja Javadoc dla bootcharta
+Summary(pl.UTF-8):   Dokumentacja Javadoc dla bootcharta
 Group:		Documentation
 Requires:	jpackage-utils
 
 %description javadoc
 Javadoc for %{name}.
 
-%description javadoc -l pl
+%description javadoc -l pl.UTF-8
 Dokumentacja Javadoc dla bootcharta.
 
 %package logger
 Summary:	Boot logging script for %{name}
-Summary(pl):	Skrypt loguj±cy proces startu dla bootcharta
+Summary(pl.UTF-8):   Skrypt logujÄ…cy proces startu dla bootcharta
 Group:		Base
 Requires:	coreutils
 Requires:	grep
@@ -62,8 +62,8 @@ Requires:	tar
 %description logger
 Boot logging script for %{name}.
 
-%description logger -l pl
-Skrypt loguj±cy proces startu dla bootcharta.
+%description logger -l pl.UTF-8
+Skrypt logujÄ…cy proces startu dla bootcharta.
 
 %prep
 %setup -q
