@@ -1,5 +1,5 @@
 Summary:	Boot Process Performance Visualization
-Summary(pl.UTF-8):   Wizualizacja wydajności procesu startu systemu
+Summary(pl.UTF-8):	Wizualizacja wydajności procesu startu systemu
 Name:		bootchart
 Version:	0.9
 Release:	1.9
@@ -37,7 +37,7 @@ w formacie PNG, SVG lub EPS.
 
 %package javadoc
 Summary:	Javadoc for %{name}
-Summary(pl.UTF-8):   Dokumentacja Javadoc dla bootcharta
+Summary(pl.UTF-8):	Dokumentacja Javadoc dla bootcharta
 Group:		Documentation
 Requires:	jpackage-utils
 
@@ -49,7 +49,7 @@ Dokumentacja Javadoc dla bootcharta.
 
 %package logger
 Summary:	Boot logging script for %{name}
-Summary(pl.UTF-8):   Skrypt logujący proces startu dla bootcharta
+Summary(pl.UTF-8):	Skrypt logujący proces startu dla bootcharta
 Group:		Base
 Requires:	coreutils
 Requires:	grep
