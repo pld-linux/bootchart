@@ -1,3 +1,4 @@
+%include	/usr/lib/rpm/macros.java
 Summary:	Boot Process Performance Visualization
 Summary(pl.UTF-8):	Wizualizacja wydajności procesu startu systemu
 Name:		bootchart
@@ -15,6 +16,7 @@ BuildRequires:	ant
 BuildRequires:	jakarta-commons-cli >= 0:1.0
 BuildRequires:	jaxp_parser_impl
 BuildRequires:	jpackage-utils >= 0:1.5
+BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.294
 Requires:	jakarta-commons-cli >= 0:1.0
 Requires:	jpackage-utils >= 0:1.5
@@ -70,20 +72,20 @@ Skrypt logujący proces startu dla bootcharta.
 %patch0 -p1
 %patch1 -p1
 
-%build
 # Remove the bundled commons-cli
 rm -rf lib/org/apache/commons/cli lib/org/apache/commons/lang
 
+%build
 required_jars="commons-cli"
-export CLASSPATH="`/usr/bin/build-classpath $required_jars`"
-
+export CLASSPATH=$(build-classpath $required_jars)
 %ant
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_javadir}
 
 # jar
-install -D %{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
+install %{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
 ln -s %{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 
 # script
@@ -102,12 +104,7 @@ install -D script/bootchartd.conf $RPM_BUILD_ROOT%{_sysconfdir}/bootchartd.conf
 rm -rf $RPM_BUILD_ROOT
 
 %post javadoc
-ln -sf %{name}-%{version} %{_javadocdir}/%{name}
-
-%postun javadoc
-if [ "$1" = "0" ]; then
-	rm -f %{_javadocdir}/%{name}
-fi
+ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 
 %post logger
 # Add a new grub/lilo entry
@@ -138,13 +135,13 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog COPYING INSTALL README TODO lib/LICENSE.cli.txt lib/LICENSE.compress.txt lib/LICENSE.epsgraphics.txt lib/NOTICE.txt
-%{_javadir}/*
 %dir %{_bindir}/bootchart
+%{_javadir}/*.jar
 
 %files javadoc
 %defattr(644,root,root,755)
-%doc %{_javadocdir}/%{name}-%{version}
-%ghost %doc %{_javadocdir}/%{name}
+%{_javadocdir}/%{name}-%{version}
+%ghost %{_javadocdir}/%{name}
 
 %files logger
 %defattr(644,root,root,755)
