@@ -3,7 +3,7 @@ Summary:	Boot Process Performance Visualization
 Summary(pl.UTF-8):	Wizualizacja wydajności procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	1.9
+Release:	2
 Epoch:		0
 License:	GPL
 Group:		Base
@@ -135,7 +135,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog COPYING INSTALL README TODO lib/LICENSE.cli.txt lib/LICENSE.compress.txt lib/LICENSE.epsgraphics.txt lib/NOTICE.txt
-%dir %{_bindir}/bootchart
+%attr(755,root,root) %{_bindir}/bootchart
 %{_javadir}/*.jar
 
 %files javadoc
