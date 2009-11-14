@@ -14,6 +14,7 @@ URL:		http://www.bootchart.org/
 BuildRequires:	ant
 BuildRequires:	java-commons-cli >= 0:1.0
 BuildRequires:	jaxp_parser_impl
+BuildRequires:	jdk
 BuildRequires:	jpackage-utils >= 0:1.5
 BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.294
