@@ -3,9 +3,8 @@ Summary:	Boot Process Performance Visualization
 Summary(pl.UTF-8):	Wizualizacja wydajności procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	2
-Epoch:		0
-License:	GPL
+Release:	3
+License:	GPL v2
 Group:		Base
 Source0:	http://dl.sourceforge.net/bootchart/%{name}-%{version}.tar.bz2
 # Source0-md5:	4be91177d19069e21beeb106f2f77dff
@@ -13,12 +12,12 @@ Patch0:		%{name}-bash.patch
 Patch1:		%{name}-initscript.patch
 URL:		http://www.bootchart.org/
 BuildRequires:	ant
-BuildRequires:	jakarta-commons-cli >= 0:1.0
+BuildRequires:	java-commons-cli >= 0:1.0
 BuildRequires:	jaxp_parser_impl
 BuildRequires:	jpackage-utils >= 0:1.5
 BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.294
-Requires:	jakarta-commons-cli >= 0:1.0
+Requires:	java-commons-cli >= 0:1.0
 Requires:	jpackage-utils >= 0:1.5
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
