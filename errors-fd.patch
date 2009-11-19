@@ -1,0 +1,11 @@
+--- bootchart-0.9/script/bootchart~	2005-11-13 19:40:01.000000000 +0200
++++ bootchart-0.9/script/bootchart	2009-11-19 15:25:56.134357109 +0200
+@@ -7,7 +7,7 @@
+ if [ -f /usr/share/java-utils/java-functions ] ; then
+   . /usr/share/java-utils/java-functions
+ else
+-  echo "Can't find functions library, aborting"
++  echo >&2 "Can't find functions library, aborting"
+   exit 1
+ fi
+ 
