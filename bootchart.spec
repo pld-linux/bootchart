@@ -3,13 +3,14 @@ Summary:	Boot Process Performance Visualization
 Summary(pl.UTF-8):	Wizualizacja wydajności procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Base
 Source0:	http://dl.sourceforge.net/bootchart/%{name}-%{version}.tar.bz2
 # Source0-md5:	4be91177d19069e21beeb106f2f77dff
 Patch0:		%{name}-bash.patch
 Patch1:		%{name}-initscript.patch
+Patch2:		errors-fd.patch
 URL:		http://www.bootchart.org/
 BuildRequires:	ant
 BuildRequires:	java-commons-cli >= 0:1.0
@@ -71,6 +72,7 @@ Skrypt logujący proces startu dla bootcharta.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # Remove the bundled commons-cli
 rm -rf lib/org/apache/commons/cli lib/org/apache/commons/lang
@@ -85,11 +87,11 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_javadir}
 
 # jar
-install %{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
+cp -a %{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
 ln -s %{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 
 # script
-install -D script/%{name} $RPM_BUILD_ROOT%{_bindir}/%{name}
+install -p -D script/%{name} $RPM_BUILD_ROOT%{_bindir}/%{name}
 
 # javadoc
 install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
@@ -97,8 +99,8 @@ cp -pr javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
 ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost symlink
 
 # logger
-install -D script/bootchartd $RPM_BUILD_ROOT/sbin/bootchartd
-install -D script/bootchartd.conf $RPM_BUILD_ROOT%{_sysconfdir}/bootchartd.conf
+install -p -D script/bootchartd $RPM_BUILD_ROOT/sbin/bootchartd
+install -p -D script/bootchartd.conf $RPM_BUILD_ROOT%{_sysconfdir}/bootchartd.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
