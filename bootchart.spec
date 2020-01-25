@@ -1,4 +1,3 @@
-%include	/usr/lib/rpm/macros.java
 Summary:	Boot Process Performance Visualization
 Summary(pl.UTF-8):	Wizualizacja wydajności procesu startu systemu
 Name:		bootchart
