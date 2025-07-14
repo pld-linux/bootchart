@@ -69,9 +69,9 @@ Skrypt logujący proces startu dla bootcharta.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
 # Remove the bundled commons-cli
 rm -rf lib/org/apache/commons/cli lib/org/apache/commons/lang
