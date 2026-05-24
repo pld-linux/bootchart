@@ -2,7 +2,7 @@ Summary:	Boot Process Performance Visualization
 Summary(pl.UTF-8):	Wizualizacja wydajności procesu startu systemu
 Name:		bootchart
 Version:	0.9
-Release:	6
+Release:	7
 License:	GPL v2
 Group:		Base
 Source0:	http://dl.sourceforge.net/bootchart/%{name}-%{version}.tar.bz2
